@@ -1,8 +1,15 @@
 require "songkick/transport"
 
+require_relative "organisation_parser"
+
 class InsideGovCollector
+
+  def initialize(options)
+    @base_url = options[:base_url]
+  end
+
   def response
-    client = Songkick::Transport::HttParty.new("http://www.dev.gov.uk/", user_agent: "Datainsight InsideGov Collector", timeout: 10)
+    client = Songkick::Transport::HttParty.new(@base_url, user_agent: "Datainsight InsideGov Collector", timeout: 10)
     client.get("/government/policies.json").data["results"].map {|policy| build_message(policy)}
   end
 

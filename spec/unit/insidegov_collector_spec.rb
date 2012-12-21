@@ -31,9 +31,9 @@ describe "insidegov collector" do
         ]
     }
 
-    FakeWeb.register_uri(:get, "http://www.dev.gov.uk/government/policies.json", body: policies.to_json)
+    FakeWeb.register_uri(:get, "http://insidegov/government/policies.json", body: policies.to_json)
 
-    collector = InsideGovCollector.new
+    collector = InsideGovCollector.new({base_url: "http://insidegov/"})
 
     response = collector.response
 

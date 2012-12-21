@@ -1,16 +1,16 @@
 require "airbrake"
+require_relative "../lib/insidegov_collector"
 
 module DataInsight
   module Collector
     def self.options
     {
-        do_all_the_stuff: "okay"
+        base_url: "insidegov base url"
     }
     end
 
     def self.collector(arguments)
-      #return some collector
-      collector = {}
+      InsideGovCollector.new(arguments)
     end
 
     def self.queue_name(arguments)
@@ -22,7 +22,8 @@ module DataInsight
     end
 
     def self.handle_error(error)
-      Airbrake.notify(error)
+      #Airbrake.notify(error)
+      true
     end
 
   end

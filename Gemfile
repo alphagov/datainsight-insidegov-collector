@@ -5,7 +5,7 @@ gem "rake"
 gem "airbrake", "3.1.5"
 gem "whenever", :require => false
 gem "datainsight_logging"
-gem "datainsight_collector"
+gem "datainsight_collector", "0.0.3"
 gem "songkick-transport"
 gem "httparty"
 gem "nokogiri"
