@@ -3,7 +3,7 @@ require "songkick/transport"
 class InsideGovCollector
   def response
     client = Songkick::Transport::HttParty.new("http://www.dev.gov.uk/", user_agent: "Datainsight InsideGov Collector", timeout: 10)
-    [build_message(client.get("/government/policies.json").data["results"].first)]
+    client.get("/government/policies.json").data["results"].map {|policy| build_message(policy)}
   end
 
   private
