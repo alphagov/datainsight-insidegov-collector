@@ -22,11 +22,10 @@ class InsideGovCollector
     end
 
     def each
-      client = Songkick::Transport::HttParty.new(@base_url, user_agent: "Datainsight InsideGov Collector", timeout: 10)
       next_page = 1
 
       until next_page.nil?
-        response = client.get("/government/policies.json?direction=alphabetical&page=#{next_page}")
+        response = client.get(build_url(next_page))
 
         response.data["results"].each do |policy|
           yield build_message(policy)
@@ -34,8 +33,20 @@ class InsideGovCollector
 
         next_page = response.data["next_page"]
       end
-
     end
+
+    def client
+      @client ||= Songkick::Transport::HttParty.new(
+        @base_url,
+        user_agent: "Datainsight InsideGov Collector",
+        timeout: 10
+      )
+    end
+
+    def build_url(page)
+      "/government/policies.json?direction=alphabetical&page=#{page}"
+    end
+
     def build_message(policy_info)
       {
         envelope: {collector: "InsideGov Collector"},
