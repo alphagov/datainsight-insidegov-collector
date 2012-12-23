@@ -8,23 +8,45 @@ class InsideGovCollector
     @base_url = options[:base_url]
   end
 
-  def response
-    client = Songkick::Transport::HttParty.new(@base_url, user_agent: "Datainsight InsideGov Collector", timeout: 10)
-    client.get("/government/policies.json").data["results"].map {|policy| build_message(policy)}
+  def messages
+    PolicyIterator.new(@base_url)
   end
 
   private
 
+  class PolicyIterator
+    include Enumerable
 
-  def build_message(policy_info)
-    {
+    def initialize(base_url)
+      @base_url = base_url
+    end
+
+    def each
+      client = Songkick::Transport::HttParty.new(@base_url, user_agent: "Datainsight InsideGov Collector", timeout: 10)
+      next_page = 1
+
+      until next_page.nil?
+        response = client.get("/government/policies.json?direction=alphabetical&page=#{next_page}")
+
+        response.data["results"].each do |policy|
+          yield build_message(policy)
+        end
+
+        next_page = response.data["next_page"]
+      end
+
+    end
+    def build_message(policy_info)
+      {
         envelope: {collector: "InsideGov Collector"},
         payload: {
-            title: policy_info["title"],
-            url: policy_info["url"],
-            updated_at: policy_info["updated_at"],
-            organisations: OrganisationParser.parse(policy_info["organisations"])
+          title: policy_info["title"],
+          url: policy_info["url"],
+          updated_at: policy_info["updated_at"],
+          organisations: OrganisationParser.parse(policy_info["organisations"])
         }
-    }
+      }
+    end
   end
+
 end
