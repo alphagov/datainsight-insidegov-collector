@@ -22,7 +22,7 @@ module DataInsight
     end
 
     def self.handle_error(error)
-      #Airbrake.notify(error)
+      Airbrake.notify(error)
       true
     end
 
