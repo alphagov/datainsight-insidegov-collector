@@ -19,7 +19,7 @@ module DataInsight
     end
 
     def self.queue_routing_key(arguments)
-      "inside_gov"
+      "inside_gov.policies"
     end
 
     def self.handle_error(error)
