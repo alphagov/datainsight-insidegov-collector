@@ -5,6 +5,7 @@ require_relative "organisation_parser"
 class InsideGovCollector
 
   def initialize(options)
+    raise "No base url provided" if options[:base_url].nil?
     @base_url = options[:base_url]
   end
 
@@ -25,7 +26,9 @@ class InsideGovCollector
       next_page = 1
 
       until next_page.nil?
-        response = client.get(build_url(next_page))
+        url = build_url(next_page)
+        logger.debug { "Fetching URL: #{url}" }
+        response = client.get(url)
 
         response.data["results"].each do |policy|
           yield build_message(policy)
