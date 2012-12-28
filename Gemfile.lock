@@ -14,7 +14,7 @@ GEM
     ci_reporter (1.7.3)
       builder (>= 2.1.2)
     connection_pool (0.9.2)
-    datainsight_collector (0.0.4)
+    datainsight_collector (0.0.5)
       bunny
       datainsight_logging
       gli (= 1.6.0)
@@ -64,7 +64,7 @@ PLATFORMS
 DEPENDENCIES
   airbrake (= 3.1.5)
   ci_reporter
-  datainsight_collector (= 0.0.4)
+  datainsight_collector (= 0.0.5)
   datainsight_logging
   fakeweb
   httparty
