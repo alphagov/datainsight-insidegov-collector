@@ -45,7 +45,7 @@ describe "insidegov collector" do
     messages.should have(2).messages
 
     message = messages.first
-    message[:envelope][:collector].should == "InsideGov Collector"
+    message[:envelope][:collector].should == "InsideGov"
     message[:payload][:title].should == "Transport policy"
     message[:payload][:url].should == "/government/policies/transport-policy"
     message[:payload][:updated_at].should == "2012-05-28T10:26:49+01:00"
@@ -54,7 +54,7 @@ describe "insidegov collector" do
     message[:payload][:organisations].first[:abbreviation].should == "DCLG"
 
     second_message = messages[1]
-    second_message[:envelope][:collector].should == "InsideGov Collector"
+    second_message[:envelope][:collector].should == "InsideGov"
     second_message[:payload][:title].should == "Another policy"
     second_message[:payload][:url].should == "/government/policies/another-policy"
     second_message[:payload][:updated_at].should == "2012-12-21T23:59:59+00:00"
