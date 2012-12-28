@@ -1,5 +1,6 @@
 require "airbrake"
 require_relative "../lib/insidegov_collector"
+require_relative "../config/initializers/errbit"
 
 module DataInsight
   module Collector
