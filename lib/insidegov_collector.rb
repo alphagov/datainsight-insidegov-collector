@@ -52,7 +52,10 @@ class InsideGovCollector
 
     def build_message(policy_info)
       {
-        envelope: {collector: "InsideGov Collector"},
+        envelope: {
+          collected_at: DateTime.now,
+          collector: "InsideGov"
+        },
         payload: {
           title: policy_info["title"],
           url: policy_info["url"],
