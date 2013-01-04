@@ -59,7 +59,6 @@ class InsideGovCollector
         payload: {
           title: policy_info["title"],
           url: policy_info["url"],
-          updated_at: policy_info["updated_at"],
           organisations: OrganisationParser.parse(policy_info["organisations"])
         }
       }
