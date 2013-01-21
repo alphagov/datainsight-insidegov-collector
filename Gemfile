@@ -7,7 +7,7 @@ gem "whenever", :require => false
 gem "datainsight_logging"
 gem "datainsight_collector", "0.0.5"
 gem "songkick-transport"
-gem "httparty"
+gem "httparty", "0.10.0"
 gem "nokogiri"
 
 group :development, :test do
