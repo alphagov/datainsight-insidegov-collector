@@ -16,7 +16,7 @@ describe "insidegov collector" do
                 title: "Transport policy",
                 url: "/government/policies/transport-policy",
                 organisations: "<abbr title=\"Department for Communities and Local Government\">DCLG</abbr>",
-                updated_at: "2012-05-28T10:26:49+01:00",
+                public_timestamp: "2012-05-28T10:26:49+01:00",
                 topics: "anything"
             },
             {
@@ -25,7 +25,7 @@ describe "insidegov collector" do
                 title: "Another policy",
                 url: "/government/policies/another-policy",
                 organisations: "<abbr title=\"Department for Random Stuff\">DRS</abbr>",
-                updated_at: "2012-12-21T23:59:59+00:00",
+                public_timestamp: "2012-12-21T23:59:59+00:00",
                 topics: "anything"
             },
         ]
@@ -48,6 +48,7 @@ describe "insidegov collector" do
     message[:envelope][:collector].should == "InsideGov"
     message[:payload][:title].should == "Transport policy"
     message[:payload][:url].should == "/government/policies/transport-policy"
+    message[:payload][:updated_at].should == "2012-05-28T10:26:49+01:00"
     message[:payload][:organisations].should have(1).item
     message[:payload][:organisations].first[:name].should == "Department for Communities and Local Government"
     message[:payload][:organisations].first[:abbreviation].should == "DCLG"
@@ -56,6 +57,7 @@ describe "insidegov collector" do
     second_message[:envelope][:collector].should == "InsideGov"
     second_message[:payload][:title].should == "Another policy"
     second_message[:payload][:url].should == "/government/policies/another-policy"
+    second_message[:payload][:updated_at].should == "2012-12-21T23:59:59+00:00"
     second_message[:payload][:organisations].should have(1).item
     second_message[:payload][:organisations].first[:name].should == "Department for Random Stuff"
     second_message[:payload][:organisations].first[:abbreviation].should == "DRS"
@@ -74,7 +76,7 @@ describe "insidegov collector" do
           title: "Transport policy",
           url: "/government/policies/transport-policy",
           organisations: "<abbr title=\"Department for Communities and Local Government\">DCLG</abbr>",
-          updated_at: "2012-05-28T10:26:49+01:00",
+          public_timestamp: "2012-05-28T10:26:49+01:00",
           topics: "anything"
         },
         {
@@ -83,7 +85,7 @@ describe "insidegov collector" do
           title: "Another policy",
           url: "/government/policies/another-policy",
           organisations: "<abbr title=\"Department for Random Stuff\">DRS</abbr>",
-          updated_at: "2012-12-21T23:59:59+00:00",
+          public_timestamp: "2012-12-21T23:59:59+00:00",
           topics: "anything"
         },
       ],
