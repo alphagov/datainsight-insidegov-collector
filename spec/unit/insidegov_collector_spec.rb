@@ -37,8 +37,6 @@ describe "insidegov collector" do
     collector = InsideGovCollector.new({base_url: "http://insidegov/"})
 
     policy_iterator = collector.messages
-    policy_iterator.should be_a(InsideGovCollector::PolicyIterator)
-
 
     messages = policy_iterator.to_a
 
@@ -105,7 +103,6 @@ describe "insidegov collector" do
     collector = InsideGovCollector.new(base_url: "http://insidegov/")
 
     policy_iterator = collector.messages
-    policy_iterator.should be_a(InsideGovCollector::PolicyIterator)
 
     messages = policy_iterator.to_a
 
