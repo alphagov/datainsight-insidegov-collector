@@ -8,25 +8,30 @@ class InsideGovCollector
 
   def initialize(options)
     raise "No base url provided" if options[:base_url].nil?
-    @base_url = options[:base_url]
+    @client = InsideGovApiClient.new(options[:base_url])
     @message_builder = DataInsight::Collector::MessageBuilder.new("InsideGov")
   end
 
   def messages
     Enumerator.new do |yielder|
-      InsideGovApiClient.new(@base_url).results("policies").each do |policy|
+      @client.results("policies").each do |policy|
+        policy["type"] = "policy"
         yielder.yield(build_message(policy))
+      end
+      @client.results("announcements").each do |announcement|
+        yielder.yield(build_message(announcement))
       end
     end
   end
 
   private
-  def build_message(policy_info)
+  def build_message(artefact)
     @message_builder.build(
-      title: policy_info["title"],
-      url: policy_info["url"],
-      updated_at: policy_info["public_timestamp"],
-      organisations: OrganisationParser.parse(policy_info["organisations"])
+      title: artefact["title"],
+      type: artefact["type"],
+      url: artefact["url"],
+      updated_at: artefact["public_timestamp"],
+      organisations: OrganisationParser.parse(artefact["organisations"])
     )
   end
 end
