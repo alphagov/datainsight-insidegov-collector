@@ -3,7 +3,7 @@ require "nokogiri"
 module OrganisationParser
 
   def self.parse(some_string)
-    return [] if some_string.nil?
+    return [] if some_string.nil? || some_string.strip.empty?
     raise "Expected a string, got #{some_string}" unless some_string.is_a?(String)
 
     organisations = Nokogiri::HTML(some_string)

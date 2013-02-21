@@ -66,4 +66,21 @@ describe "insidegov collector" do
     message[:payload][:organisations].first[:name].should == "Department for Communities and Local Government"
     message[:payload][:organisations].first[:abbreviation].should == "DCLG"
   end
+
+  it "should not fail if there are no organisations" do
+    @artefact["organisations"] = ""
+
+    InsideGovApiClient.any_instance
+    .should_receive(:results)
+    .with("policies")
+    .and_return([@artefact])
+    InsideGovApiClient.any_instance
+    .should_receive(:results)
+    .with("announcements")
+    .and_return([])
+
+    collector = InsideGovCollector.new({base_url: "http://insidegov/"})
+
+    lambda { collector.messages.to_a }.should_not raise_error
+  end
 end

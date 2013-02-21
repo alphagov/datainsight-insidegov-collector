@@ -31,7 +31,11 @@ class InsideGovCollector
       type: artefact["type"],
       url: artefact["url"],
       updated_at: artefact["public_timestamp"],
-      organisations: OrganisationParser.parse(artefact["organisations"])
+      organisations: organisations(artefact)
     )
+  end
+
+  def organisations(artefact)
+    OrganisationParser.parse(artefact["organisations"])
   end
 end
