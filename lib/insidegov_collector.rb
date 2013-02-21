@@ -36,6 +36,11 @@ class InsideGovCollector
   end
 
   def organisations(artefact)
-    OrganisationParser.parse(artefact["organisations"])
+    begin
+      OrganisationParser.parse(artefact["organisations"])
+    rescue Exception => e
+      logger.error(e)
+      ""
+    end
   end
 end
