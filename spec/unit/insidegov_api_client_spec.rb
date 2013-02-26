@@ -77,4 +77,34 @@ describe InsideGovApiClient do
     items[3].should == payload[:results][1]
   end
 
+  it "should repeat the request after a timeout" do
+    url = "http://insidegov/government/items.json?direction=alphabetical&page=1"
+    FakeWeb.register_uri(:get, url, [{:exception => Songkick::Transport::TimeoutError}, {:body => {results: []}.to_json}])
+
+    client = InsideGovApiClientNoSleep.new("http://insidegov/")
+
+    expect { client.results("items").to_a }.to_not raise_error
+  end
+
+  it "should fail after 3 retries" do
+    url = "http://insidegov/government/items.json?direction=alphabetical&page=1"
+    FakeWeb.register_uri(:get, url,
+                         [{:exception => Songkick::Transport::TimeoutError},
+                          {:exception => Songkick::Transport::TimeoutError},
+                          {:exception => Songkick::Transport::TimeoutError},
+                          {:body => {results: []}.to_json}])
+
+    client = InsideGovApiClientNoSleep.new("http://insidegov/")
+
+    expect { client.results("items").to_a }.to raise_error(Songkick::Transport::TimeoutError)
+  end
+
+  class InsideGovApiClientNoSleep < InsideGovApiClient
+    def initialize(url)
+      super(url)
+    end
+
+    def sleep(no_of_seconds)
+    end
+  end
 end

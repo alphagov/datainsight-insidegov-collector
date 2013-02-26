@@ -14,7 +14,7 @@ class InsideGovApiClient
 
         logger.debug {"Fetching URL: #{url}"}
 
-        response = client.get(url)
+        response = repeat_if_timeout(3) { client.get(url) }
 
         response.data["results"].each do |item|
           yielder.yield(item)
@@ -23,6 +23,26 @@ class InsideGovApiClient
         page = response.data["next_page"]
       end
     end
+  end
+
+  def repeat_if_timeout(repeat_no)
+    number_of_timeouts = 0
+    seconds_to_sleep = 5
+
+    begin
+      begin
+        response = yield
+      rescue Songkick::Transport::TimeoutError => e
+        number_of_timeouts += 1
+        if number_of_timeouts >= repeat_no
+          raise e
+        end
+        logger.warn("Connection timed out. Request is going to be retried in #{seconds_to_sleep} seconds.")
+        sleep(seconds_to_sleep)
+      end
+    end while response.nil?
+
+    return response
   end
 
   def client
