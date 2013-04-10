@@ -12,9 +12,10 @@ class InsideGovApiClient
       until page.nil?
         url = build_url(path, page)
 
-        logger.debug {"Fetching URL: #{url}"}
-
-        response = repeat_if_timeout(3) { client.get(url) }
+        response = repeat_if_timeout(3) {
+          logger.debug {"Fetching URL: #{url}"}
+          client.get(url)
+        }
 
         response.data["results"].each do |item|
           yielder.yield(item)
