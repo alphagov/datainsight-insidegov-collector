@@ -86,6 +86,15 @@ describe InsideGovApiClient do
     expect { client.results("items").to_a }.to_not raise_error
   end
 
+  it "should repeat the request if parsing json fails" do
+    url = "http://insidegov/government/items.json?direction=alphabetical&page=1"
+    FakeWeb.register_uri(:get, url, [{:body => "not json"}, {:body => {results: []}.to_json}])
+
+    client = InsideGovApiClientNoSleep.new("http://insidegov/")
+
+    expect { client.results("items").to_a }.to_not raise_error
+  end
+
   it "should fail after 3 retries" do
     url = "http://insidegov/government/items.json?direction=alphabetical&page=1"
     FakeWeb.register_uri(:get, url,
