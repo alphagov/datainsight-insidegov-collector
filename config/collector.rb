@@ -24,6 +24,7 @@ module DataInsight
 
     def self.handle_error(error)
       Airbrake.notify(error)
+      $stderr.puts(error)
       true
     end
 

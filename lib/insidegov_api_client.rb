@@ -33,7 +33,7 @@ class InsideGovApiClient
     begin
       begin
         response = yield
-      rescue Songkick::Transport::TimeoutError => e
+      rescue Songkick::Transport::TimeoutError, Songkick::Transport::InvalidJSONError => e
         number_of_timeouts += 1
         if number_of_timeouts >= repeat_no
           raise e
